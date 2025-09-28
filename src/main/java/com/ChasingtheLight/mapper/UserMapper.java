@@ -1,8 +1,10 @@
 package com.ChasingtheLight.mapper;
 
+import com.ChasingtheLight.VO.UserVO;
 import com.ChasingtheLight.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface UserMapper {
@@ -18,4 +20,7 @@ public interface UserMapper {
 
     // 插入用户信息
     void insertUser(User user);
+
+    @Select("select userName,password from user where userName = #{userName}")
+    UserVO checkUserByUsername(String userName);
 }

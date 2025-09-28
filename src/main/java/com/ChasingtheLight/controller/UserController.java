@@ -1,5 +1,6 @@
 package com.ChasingtheLight.controller;
 
+import com.ChasingtheLight.VO.UserVO;
 import com.ChasingtheLight.entity.User;
 import com.ChasingtheLight.service.UserService;
 import com.ChasingtheLight.util.Result;
@@ -27,6 +28,16 @@ public class UserController {
             return Result.fail(500, e.getMessage());
         } catch (Exception e) {
             return Result.fail(500, "注册失败：" + e.getMessage());
+        }
+    }
+
+    @PostMapping("login")
+    public Result login( @RequestBody User user) {
+            UserVO foundUser = userService.checkUser(user);
+            if (foundUser != null) {
+                return Result.success();
+            }else {
+                return Result.fail(401, "用户名或密码错误");
         }
     }
 }
