@@ -21,6 +21,6 @@ public interface UserMapper {
     // 插入用户信息
     void insertUser(User user);
 
-    @Select("select userName,password from user where userName = #{userName}")
+    @Select("select user_name as userName, password from user where user_name = #{userName}")
     UserVO checkUserByUsername(String userName);
 }

@@ -1,57 +1,41 @@
 package com.ChasingtheLight.util;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.Data; // 或者手动添加getter/setter
 
-import java.io.Serializable;
-
-@Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Result implements Serializable {
-    private Integer code;
+@Data // 使用lombok的@Data注解自动生成getter/setter
+public class Result {
+    private int code;
     private String message;
     private Object data;
 
-    public Result(){
-        this.code = 200;
-        this.message = "操作成功";
-    }
+    // 无参构造函数（必须，JSON反序列化需要）
+    public Result() {}
 
-    /**
-     * 用于@valid错误处理
-     * @param code 错误
-     * @param message 错误提示信息
-     */
-    public Result(Integer code, String message){
+    // 有参构造函数
+    public Result(int code, String message, Object data) {
         this.code = code;
         this.message = message;
-    }
-
-    /**
-     * 用于封装返回数据
-     * @param data 返回数据
-     */
-    public Result(Object data){
-        this();
         this.data = data;
     }
-    //系统错误
-    public static Result error(Integer code,String message){
-        return new Result(code,message);
+
+    // 静态方法保持不变
+    public static Result success() {
+        return new Result(200, "成功", null);
     }
-    public static Result error(String message){
-        return new Result(402,message);
+
+    public static Result success(Object data) {
+        return new Result(200, "成功", data);
     }
-    //操作成功，返回数据
-    public static <T> Result success(T data){
-        return new Result(data);
+
+    public static Result fail(int code, String message) {
+        return new Result(code, message, null);
     }
-    //操作成功，无返回数据
-    public static  Result success(){
-        return new Result();
-    }
-    //操作失败，无返回数据
-    public static  Result fail(int code, String message){
-        return new Result(code,message);
-    }
+
+    // 如果不使用@Data，需要手动添加getter/setter
+    // public int getCode() { return code; }
+    // public void setCode(int code) { this.code = code; }
+    // public String getMessage() { return message; }
+    // public void setMessage(String message) { this.message = message; }
+    // public Object getData() { return data; }
+    // public void setData(Object data) { this.data = data; }
 }

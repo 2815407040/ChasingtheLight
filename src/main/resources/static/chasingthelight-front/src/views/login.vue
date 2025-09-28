@@ -90,7 +90,7 @@ const handleLogin = async () => {
 
         if (response.data.code === 200) {
           ElMessage.success('登录成功')
-          localStorage.setItem('token', response.data.data)
+          localStorage.setItem('token', response.data.data);
           router.push('/index')
         } else {
           ElMessage.error(response.data.message || '登录失败')
