@@ -114,9 +114,9 @@ const handleRegister = async () => {
       if (valid) {
         const response = await request.post("/user/register", registerForm.value);
         if (response.data.code === 200) {
-          ElMessage.success('注册成功，请登录');
+          ElMessage.success('注册成功，我们已向您的邮箱发送了激活链接，请查收并激活账号');
           router.push('/login');
-        } else {
+        }else {
           ElMessage.error(response.data.message || '注册失败');
         }
       }

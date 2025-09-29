@@ -88,11 +88,18 @@ const handleLogin = async () => {
       if (valid) {
         const response = await request.post("/user/login", loginForm.value)
 
+        // 修改handleLogin方法中的成功处理部分
         if (response.data.code === 200) {
           ElMessage.success('登录成功')
-          localStorage.setItem('token', response.data.data);
+          // 确保token正确存储
+          if (response.data.data && response.data.data.token) {
+            localStorage.setItem('token', response.data.data.token);
+          } else {
+            // 兼容可能的token直接返回的情况
+            localStorage.setItem('token', response.data.data);
+          }
           router.push('/index')
-        } else {
+        }else {
           ElMessage.error(response.data.message || '登录失败')
         }
       }

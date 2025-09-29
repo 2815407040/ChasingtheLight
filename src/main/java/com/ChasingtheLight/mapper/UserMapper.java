@@ -5,6 +5,7 @@ import com.ChasingtheLight.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface UserMapper {
@@ -23,4 +24,12 @@ public interface UserMapper {
 
     @Select("select user_name as userName, password from user where user_name = #{userName}")
     UserVO checkUserByUsername(String userName);
+
+    @Select("select * from user where activation_code = #{activationCode} and status = 0")
+    User findByActivationCode( String activationCode);
+
+    @Update("UPDATE user SET status = 1, activation_time = #{activationTime}, activation_code = #{activationCode} " +
+            "WHERE user_id = #{userId}")
+    void updateUserStatus(User user);
+
 }

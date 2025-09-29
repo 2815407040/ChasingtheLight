@@ -19,10 +19,11 @@
         SELECT COUNT(*) FROM user WHERE phone_number = #{phoneNumber}
     </select>
 
-    <!-- 插入用户信息 -->
     <insert id="insertUser" parameterType="com.ChasingtheLight.entity.User">
-        INSERT INTO user (user_name, password, email, phone_number)
-        VALUES (#{userName}, #{password}, #{email}, #{phoneNumber})
+        INSERT INTO user (user_name, password, email, phone_number, status,
+                          activation_code, activation_time, create_time)
+        VALUES (#{userName}, #{password}, #{email}, #{phoneNumber}, #{status},
+                #{activationCode}, #{activationTime}, #{createTime})
     </insert>
 
 </mapper>

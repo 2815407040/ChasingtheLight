@@ -1,11 +1,10 @@
 <template>
   <div class="app-container">
 
-    <!-- 热门推荐 -->
     <section class="section">
       <div class="container">
         <div class="section-title">
-          <h2>热门推荐</h2>
+          <h2>以下是搜索结果</h2>
           <p>精选高品质相机，满足不同摄影需求和预算，帮助你找到最适合的设备</p>
         </div>
 
@@ -33,7 +32,7 @@
     </section>
 
 
-<!--    隐藏-->
+    <!--    隐藏-->
     <section class="brands" style="visibility: hidden; height: 0; padding: 0; margin: 0;">
       <div class="container">
         <div class="section-title">
@@ -64,36 +63,24 @@ export default {
     return {
       // 初始化时为空数组，等待后端数据
       featuredCameras: [],
-      categories: [
-        { id: 1, name: '全画幅微单', icon: 'fa-camera', count: 32 },
-        { id: 2, name: 'APS-C画幅', icon: 'fa-camera-retro', count: 45 },
-        { id: 3, name: '卡片相机', icon: 'fa-compact-disc', count: 28 },
-        { id: 4, name: '单反相机', icon: 'fa-video-camera', count: 22 },
-        { id: 5, name: '运动相机', icon: 'fa-bicycle', count: 18 },
-        { id: 6, name: '中画幅相机', icon: 'fa-picture-o', count: 12 }
-      ]
     };
   },
   methods: {
-    viewDetails(camera) {
-      // 跳转到相机详情页，可以根据实际路由进行修改
-      this.$router.push(`/camera-details/${camera.id}`);
-      // 如果暂时没有详情页，可以使用弹窗显示信息
-      // alert(`查看 ${camera.brand} ${camera.name} 的详情`);
-    },
-    handleLogout() {
-      // 清除本地存储的token
-      localStorage.removeItem('token');
-      // 跳转到登录页
-      this.$router.push('/login');
-      // 显示退出登录提示
-      alert('已成功退出登录');
-    },
-    // 获取热门相机数据
-    // 修改 fetchPopularCameras 方法
-    async fetchPopularCameras() {
+    async fetchSearchCameras() {
       try {
-        const response = await request.get('/camera/popular')
+        // 获取URL中的搜索参数
+        const searchKeyword = this.$route.query.keyword || '';
+
+        // 构造搜索参数对象
+        const searchParams = {
+          keyword: searchKeyword
+          // 可以根据需要添加更多搜索条件
+        };
+
+        // 将参数传递给接口
+        const response = await request.post('/camera/search', {
+          keyword: searchKeyword  // 传递对象而非字符串
+        });
         console.log('后端返回完整数据:', response);
 
         // 正确的层级解析：response.data 是接口返回的外层对象，包含 code、message、data
@@ -133,7 +120,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchPopularCameras();
+    this.fetchSearchCameras();
   }
 };
 </script>

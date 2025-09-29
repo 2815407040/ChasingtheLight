@@ -1,14 +1,33 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/login.vue'
-import Index from "../views/index.vue";
+import Layout from "../views/index.vue";
 import Register from '../views/register.vue'
 import PopularCameras from "../views/PopularCameras.vue";
+import Home from '../views/home.vue'
+import SearchCamera from '../views/searchCamera.vue'
 
 const routes = [
     {
-        path: '/',
-        redirect: '/login'
+        path: '/index',
+        component: Layout,
+        children: [
+            {
+                path: '',
+                name: 'Home',
+                component: Home
+            },
+            {
+                path: '/popularCameras',
+                name: 'PopularCameras',
+                component: PopularCameras
+            },
+            {
+                path: '/searchCamera',
+                name: 'SearchCamera',
+                component: SearchCamera
+            }
+        ]
     },
     {
         path: '/login',
@@ -19,17 +38,6 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: Register
-    },
-    {
-        path: '/index',
-        name: 'Index',
-        component: Index,
-
-    },
-    {
-        path: '/PopularCameras',  // 将路径修改为与访问地址一致的大小写
-        name: 'PopularCameras',
-        component: PopularCameras
     }
 ]
 
@@ -37,6 +45,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
 // 路由守卫
 router.beforeEach((to, from, next) => {
     // 判断目标页面是否需要认证
