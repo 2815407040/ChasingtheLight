@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 其他配置（如环境、数据源） -->
+    <settings>
+        <!-- 关键配置：开启驼峰命名自动映射为下划线命名 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 可选：开启日志，方便调试字段映射 -->
+        <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
+    </settings>
+</configuration>

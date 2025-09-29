@@ -8,8 +8,7 @@ const request = axios.create({
     withCredentials: true
 });
 
-// 请求拦截器：添加token到请求头
-// 修改请求拦截器，登录接口不添加token
+
 request.interceptors.request.use(
     config => {
         // 排除登录接口

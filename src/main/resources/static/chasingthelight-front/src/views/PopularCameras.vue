@@ -31,14 +31,7 @@
     </header>
 
     <!-- 英雄区域 -->
-    <section class="hero">
-      <div class="container">
-        <h1>发现适合你的完美相机</h1>
-        <p>无论你是专业摄影师还是摄影爱好者，我们都能为你推荐最适合的摄影器材，助你捕捉生活中的每一个精彩瞬间。</p>
-        <router-link to="/popularCameras">热门相机</router-link>
-        <a href="#" class="btn btn-secondary">查看最新评测</a>
-      </div>
-    </section>
+
 
     <!-- 热门推荐 -->
     <section class="section">
@@ -49,18 +42,18 @@
         </div>
 
         <div class="cameras-grid">
-          <div class="camera-card" v-for="camera in featuredCameras" :key="camera.id">
+          <div class="camera-card" v-for="camera in featuredCameras" :key="camera.cameraId">
             <div class="camera-img">
-              <img :src="camera.image" :alt="camera.name">
+              <img :src="camera.imgUrl" :alt="camera.model">
             </div>
             <div class="camera-info">
               <div class="camera-brand">{{ camera.brand }}</div>
-              <div class="camera-name">{{ camera.name }}</div>
+              <div class="camera-name">{{ camera.model }}</div>
               <div class="camera-rating">
                 <i class="fa fa-star" v-for="n in 5" :key="n" :class="{ 'fa-star-o': n > camera.rating }"></i>
                 <span>({{ camera.reviews }})</span>
               </div>
-              <div class="camera-price">¥{{ camera.price.toLocaleString() }}</div>
+              <div class="camera-price">¥{{ camera.price }}</div>
               <div class="camera-features">
                 <span class="feature-tag" v-for="feature in camera.features" :key="feature">{{ feature }}</span>
               </div>
@@ -91,8 +84,8 @@
       </div>
     </section>
 
-    <!-- 品牌展示 -->
-    <section class="brands">
+<!--    隐藏-->
+    <section class="brands" style="visibility: hidden; height: 0; padding: 0; margin: 0;">
       <div class="container">
         <div class="section-title">
           <h2>合作品牌</h2>
@@ -110,108 +103,18 @@
       </div>
     </section>
 
-    <!-- 页脚 -->
-    <footer>
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-column">
-            <h3>摄影器材</h3>
-            <p>专业的相机推荐平台，为摄影爱好者提供最全面的器材信息和购买建议。</p>
-            <div class="social-links">
-              <a href="#"><i class="fa fa-facebook"></i></a>
-              <a href="#"><i class="fa fa-twitter"></i></a>
-              <a href="#"><i class="fa fa-instagram"></i></a>
-              <a href="#"><i class="fa fa-youtube"></i></a>
-            </div>
-          </div>
-
-          <div class="footer-column">
-            <h3>快速链接</h3>
-            <ul class="footer-links">
-              <li><a href="#" @click.prevent="$router.push('/')">首页</a></li>
-              <li><a href="#">相机</a></li>
-              <li><a href="#">镜头</a></li>
-              <li><a href="#">配件</a></li>
-              <li><a href="#">评测</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-column">
-            <h3>帮助中心</h3>
-            <ul class="footer-links">
-              <li><a href="#">购物指南</a></li>
-              <li><a href="#">支付方式</a></li>
-              <li><a href="#">配送信息</a></li>
-              <li><a href="#">退换政策</a></li>
-              <li><a href="#">常见问题</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-column">
-            <h3>订阅资讯</h3>
-            <p>订阅我们的邮件，获取最新的产品信息和摄影技巧。</p>
-            <form class="newsletter-form">
-              <input type="email" placeholder="你的邮箱地址">
-              <button type="submit">订阅</button>
-            </form>
-          </div>
-        </div>
-
-        <div class="footer-bottom">
-          <p>&copy; 2023 摄影器材网. 保留所有权利.</p>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>
 
 <script>
+import request from "../utils/request.js";
+
 export default {
   name: 'IndexPage',
   data() {
     return {
-      featuredCameras: [
-        {
-          id: 1,
-          brand: '索尼',
-          name: 'Alpha 7 III 全画幅微单相机',
-          image: 'https://picsum.photos/id/1015/500/300',
-          rating: 4.8,
-          reviews: 256,
-          price: 12999,
-          features: ['全画幅', '2420万像素', '5轴防抖', '4K视频']
-        },
-        {
-          id: 2,
-          brand: '佳能',
-          name: 'EOS R5 专业全画幅微单',
-          image: 'https://picsum.photos/id/1016/500/300',
-          rating: 4.9,
-          reviews: 189,
-          price: 25999,
-          features: ['4500万像素', '8K视频', '双像素对焦', '防水']
-        },
-        {
-          id: 3,
-          brand: '尼康',
-          name: 'Z6 II 全画幅微单相机',
-          image: 'https://picsum.photos/id/1018/500/300',
-          rating: 4.7,
-          reviews: 145,
-          price: 13799,
-          features: ['2450万像素', '4K视频', '双EXPEED 6', 'Wi-Fi']
-        },
-        {
-          id: 4,
-          brand: '富士',
-          name: 'X-T4 无反相机',
-          image: 'https://picsum.photos/id/1019/500/300',
-          rating: 4.6,
-          reviews: 203,
-          price: 8799,
-          features: ['2610万像素', '4K 60p', '五轴防抖', '复古设计']
-        }
-      ],
+      // 初始化时为空数组，等待后端数据
+      featuredCameras: [],
       categories: [
         { id: 1, name: '全画幅微单', icon: 'fa-camera', count: 32 },
         { id: 2, name: 'APS-C画幅', icon: 'fa-camera-retro', count: 45 },
@@ -236,7 +139,52 @@ export default {
       this.$router.push('/login');
       // 显示退出登录提示
       alert('已成功退出登录');
+    },
+    // 获取热门相机数据
+    // 修改 fetchPopularCameras 方法
+    async fetchPopularCameras() {
+      try {
+        const response = await request.get('/camera/popular')
+        console.log('后端返回完整数据:', response);
+
+        // 正确的层级解析：response.data 是接口返回的外层对象，包含 code、message、data
+        const apiData = response.data;
+
+        // 验证数据格式
+        if (apiData.code === 200 && Array.isArray(apiData.data)) {
+          this.featuredCameras = apiData.data.map(camera => {
+            // 收集特性（过滤 null 值）
+            const features = [];
+            if (camera.design_style) features.push(camera.design_style);
+            if (camera.pixel) features.push(camera.pixel);
+            if (camera.stabilization) features.push(camera.stabilization);
+            if (camera.videoRes) features.push(camera.videoRes);
+
+            // 处理默认图片
+            const defaultImg = `https://picsum.photos/seed/${camera.cameraId}/300/200`;
+
+            return {
+              cameraId: camera.cameraId,
+              brand: camera.brand,
+              model: camera.model,
+              price: camera.price,
+              imgUrl: camera.imgUrl || defaultImg,
+              // 生成模拟评分和评论数
+              rating: Math.floor(Math.random() * 2) + 4, // 4-5星
+              reviews: Math.floor(Math.random() * 200) + 50, // 50-250条评论
+              features: features
+            };
+          });
+        } else {
+          console.error('后端返回数据格式不正确');
+        }
+      } catch (error) {
+        console.error('获取热门相机数据失败:', error);
+      }
     }
+  },
+  mounted() {
+    this.fetchPopularCameras();
   }
 };
 </script>

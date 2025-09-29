@@ -14,7 +14,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 2. 验证token（排除登录/注册接口）
         String path = request.getRequestURI();
-        if ("/user/login".equals(path) || "/user/register".equals(path)) {
+        if ("/user/login".equals(path) || "/user/register".equals(path)|| "/camera/popular".equals(path)) {
             return true;
         }
         // 3. 验证token有效性

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/login.vue'
 import Index from "../views/index.vue";
 import Register from '../views/register.vue'
+import PopularCameras from "../views/PopularCameras.vue";
 
 const routes = [
     {
@@ -22,7 +23,13 @@ const routes = [
     {
         path: '/index',
         name: 'Index',
-        component: Index
+        component: Index,
+
+    },
+    {
+        path: '/PopularCameras',  // 将路径修改为与访问地址一致的大小写
+        name: 'PopularCameras',
+        component: PopularCameras
     }
 ]
 
