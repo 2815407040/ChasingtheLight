@@ -10,23 +10,14 @@
         </div>
 
         <div class="cameras-grid">
-          <div class="camera-card" v-for="camera in featuredCameras" :key="camera.cameraId">
-            <div class="camera-img">
-              <img :src="camera.imgUrl" :alt="camera.model">
-            </div>
-            <i class="fa-regular fa-heart heart-icon" :class="{ 'active': camera.liked }" @click="toggleLike(camera)"></i>
-            <div class="camera-info">
-              <div class="camera-brand">{{ camera.brand }}</div>
-              <div class="camera-name">{{ camera.model }}</div>
-
-
-              <div class="camera-price">¥{{ camera.price }}</div>
-              <div class="camera-features">
-                <span class="feature-tag" v-for="feature in camera.features" :key="feature">{{ feature }}</span>
-              </div>
-              <button class="view-details" @click="viewDetails(camera)">查看详情</button>
-            </div>
-          </div>
+          <camera-card
+              v-for="camera in featuredCameras"
+              :key="camera.cameraId"
+              :camera="camera"
+              :show-like-icon="true"
+              @view-details="viewDetails"
+              @toggle-like="toggleLike"
+          ></camera-card>
         </div>
       </div>
     </section>
@@ -56,25 +47,25 @@
 
 <script>
 import request from "../utils/request.js";
+import CameraCard from '../components/CameraCard.vue';
 
 export default {
   name: 'IndexPage',
+  components: {
+    CameraCard // 注册组件，这样模板中才能使用 <camera-card> 标签
+  },
   data() {
     return {
       // 初始化时为空数组，等待后端数据
       featuredCameras: [],
-      categories: [
-        { id: 1, name: '全画幅微单', icon: 'fa-camera', count: 32 },
-        { id: 2, name: 'APS-C画幅', icon: 'fa-camera-retro', count: 45 },
-        { id: 3, name: '卡片相机', icon: 'fa-compact-disc', count: 28 },
-        { id: 4, name: '单反相机', icon: 'fa-video-camera', count: 22 },
-        { id: 5, name: '运动相机', icon: 'fa-bicycle', count: 18 },
-        { id: 6, name: '中画幅相机', icon: 'fa-picture-o', count: 12 }
-      ]
     };
   },
   methods: {
+    viewDetails(camera) {
+      // 这里可以添加查看详情的逻辑，比如跳转到详情页
+      console.log('查看相机详情:', camera);
 
+    },
     toggleLike(camera) {
       camera.liked = !camera.liked;
     },

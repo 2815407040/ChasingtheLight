@@ -67,7 +67,7 @@ header {
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 25px;
 }
 
 .nav-links a {
@@ -100,20 +100,114 @@ header {
     color: #777;
 }
 
+/* 用户操作区样式 */
 .user-actions {
     display: flex;
-    gap: 20px;
     align-items: center;
+    gap: 20px;
+    position: relative;
 }
 
-.user-actions button {
+.user-btn {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-size: 18px;
-    color: #333;
-    transition: color 0.3s;
+    color: #2c3e50;
+    background-color: #f5f7fa;
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-.user-actions button:hover {
-    color: #e74c3c; /* 退出登录按钮 hover 时变红 */
+.user-btn:hover {
+    background-color: #e8f4fd;
+    color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+/* 提示文字 */
+.tooltip {
+    position: absolute;
+    top: -36px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2c3e50;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: #2c3e50 transparent transparent;
+}
+
+.user-btn:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    top: -32px;
+}
+
+/* 购物车徽章 */
+.cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 18px;
+    height: 18px;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* 退出按钮特殊样式 */
+.logout-btn:hover {
+    background-color: #fee;
+    color: #e74c3c;
+}
+
+.logout-btn:hover .tooltip {
+    background-color: #e74c3c;
+}
+
+.logout-btn:hover .tooltip::after {
+    border-color: #e74c3c transparent transparent;
+}
+
+/* 带文字的用户按钮样式 */
+.user-btn.with-text {
+    width: auto;
+    height: 42px;
+    border-radius: 21px;
+    padding: 0 15px;
+    gap: 8px;
+}
+
+.btn-text {
+    font-size: 14px;
+    font-weight: 500;
 }
 
 /* 英雄区域 */
@@ -201,7 +295,9 @@ header {
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
+/* 相机卡片图片和爱心图标样式 */
 .camera-img {
+    position: relative;
     height: 200px;
     overflow: hidden;
 }
@@ -215,6 +311,34 @@ header {
 
 .camera-card:hover .camera-img img {
     transform: scale(1.05);
+}
+
+/* 爱心图标样式 */
+.heart-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    color: white;
+    text-shadow: 0 0 2px rgba(0,0,0,0.3);
+    z-index: 2;
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 400;
+}
+
+.heart-icon::before {
+    content: '\f08a';
+}
+
+.heart-icon:hover {
+    transform: scale(1.1);
+}
+
+.heart-icon.active {
+    color: #e74c3c;
+    font-weight: 400;
 }
 
 .camera-info {
@@ -285,6 +409,7 @@ header {
 }
 
 .category-card {
+    position: relative;
     text-align: center;
     padding: 30px;
     border-radius: 10px;
@@ -470,11 +595,19 @@ footer {
         margin-left: auto;
         margin-right: auto;
     }
+
+    .user-btn.with-text {
+        padding: 0 10px;
+    }
+
+    .btn-text {
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 576px) {
     .nav-links {
-        gap: 15px;
+        gap: 25px;
     }
 
     .hero {
@@ -492,106 +625,7 @@ footer {
     .section-title h2 {
         font-size: 24px;
     }
-}
 
-/* 用户操作区样式 */
-.user-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-}
-
-.user-btn {
-    position: relative;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    color: #2c3e50;
-    background-color: #f5f7fa;
-    transition: all 0.3s ease;
-    overflow: hidden;
-}
-
-.user-btn:hover {
-    background-color: #e8f4fd;
-    color: #3498db;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
-}
-
-/* 提示文字 */
-.tooltip {
-    position: absolute;
-    top: -36px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #2c3e50;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 10;
-}
-
-.tooltip::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 5px 5px 0;
-    border-style: solid;
-    border-color: #2c3e50 transparent transparent;
-}
-
-.user-btn:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-    top: -32px;
-}
-
-/* 购物车徽章 */
-.cart-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 18px;
-    height: 18px;
-    background-color: #e74c3c;
-    color: white;
-    font-size: 10px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-/* 退出按钮特殊样式 */
-.logout-btn:hover {
-    background-color: #fee;
-    color: #e74c3c;
-}
-
-.logout-btn:hover .tooltip {
-    background-color: #e74c3c;
-}
-
-.logout-btn:hover .tooltip::after {
-    border-color: #e74c3c transparent transparent;
-}
-
-/* 响应式调整 */
-@media (max-width: 576px) {
     .user-btn {
         width: 36px;
         height: 36px;
@@ -599,36 +633,9 @@ footer {
     }
 
     .tooltip {
-        display: none; /* 移动端隐藏提示文字 */
-    }
-}
-
-/* 带文字的用户按钮样式 */
-.user-btn.with-text {
-    width: auto;
-    height: 42px;
-    border-radius: 21px;
-    padding: 0 15px;
-    gap: 8px;
-}
-
-.btn-text {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-/* 响应式调整 */
-@media (max-width: 768px) {
-    .user-btn.with-text {
-        padding: 0 10px;
+        display: none;
     }
 
-    .btn-text {
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 576px) {
     .user-btn.with-text {
         width: 36px;
         height: 36px;
@@ -637,58 +644,6 @@ footer {
     }
 
     .btn-text {
-        display: none; /* 移动端仍只显示图标 */
+        display: none;
     }
-}
-
-/* 为分类卡片添加相对定位，使爱心图标可以绝对定位 */
-.category-card {
-    position: relative;
-    text-align: center;
-    padding: 30px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-/* 相机卡片爱心图标样式 */
-.camera-img {
-    position: relative; /* 确保爱心图标可以绝对定位 */
-    height: 200px;
-    overflow: hidden;
-}
-
-/* 爱心图标样式修改 */
-.heart-icon {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
-    color: white; /* 初始白色空心爱心 */
-    text-shadow: 0 0 2px rgba(0,0,0,0.3); /* 增加文字阴影提高可见度 */
-    z-index: 2; /* 确保在图片上方显示 */
-    font-family: 'Font Awesome 6 Free';
-    font-weight: 400;
-}
-
-.heart-icon::before {
-    content: '\f08a'; /* 空心爱心图标 */
-}
-
-.heart-icon:hover {
-    transform: scale(1.1); /* hover时稍微放大 */
-}
-
-/* 激活状态 - 红色内部对角线相连的空心矩形 */
-/* 修改激活状态的爱心图标 */
-.heart-icon.active {
-    color: #e74c3c; /* 红色 */
-    font-weight: 400; /* 保持常规字重 */
-}
-
-/* 将正方形图标改为空心爱心图标 */
-.heart-icon.active::before {
-    content: '\f08a'; /* 空心爱心图标（与未激活状态相同但颜色变为红色） */
 }

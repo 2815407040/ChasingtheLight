@@ -19,20 +19,14 @@
         </div>
 
         <div class="cameras-grid">
-          <div class="camera-card" v-for="camera in featuredCameras" :key="camera.id">
-            <div class="camera-img">
-              <img :src="camera.image" :alt="camera.name">
-            </div>
-            <div class="camera-info">
-              <div class="camera-brand">{{ camera.brand }}</div>
-              <div class="camera-name">{{ camera.name }}</div>
-              <div class="camera-price">¥{{ camera.price.toLocaleString() }}</div>
-              <div class="camera-features">
-                <span class="feature-tag" v-for="feature in camera.features" :key="feature">{{ feature }}</span>
-              </div>
-              <button class="view-details" @click="viewDetails(camera)">查看详情</button>
-            </div>
-          </div>
+          <camera-card
+              v-for="camera in featuredCameras"
+              :key="camera.cameraId"
+              :camera="camera"
+              :show-like-icon="true"
+              @view-details="viewDetails"
+              @toggle-like="toggleLike"
+          ></camera-card>
         </div>
       </div>
     </section>
@@ -40,59 +34,77 @@
 </template>
 
 <script>
+import CameraCard from "../components/CameraCard.vue";
+import request from "../utils/request.js";
+
 export default {
   name: 'HomePage',
+  components: {
+    CameraCard // 注册组件，这样模板中才能使用 <camera-card> 标签
+  },
   data() {
     return {
-      featuredCameras: [
-        {
-          id: 1,
-          brand: '索尼',
-          name: 'Alpha 7 III 全画幅微单相机',
-          image: 'https://picsum.photos/id/1015/500/300',
-          rating: 4.8,
-          reviews: 256,
-          price: 12999,
-          features: ['全画幅', '2420万像素', '5轴防抖', '4K视频']
-        },
-        {
-          id: 2,
-          brand: '佳能',
-          name: 'EOS R5 专业全画幅微单',
-          image: 'https://picsum.photos/id/1016/500/300',
-          rating: 4.9,
-          reviews: 189,
-          price: 25999,
-          features: ['4500万像素', '8K视频', '双像素对焦', '防水']
-        },
-        {
-          id: 3,
-          brand: '尼康',
-          name: 'Z6 II 全画幅微单相机',
-          image: 'https://picsum.photos/id/1018/500/300',
-          rating: 4.7,
-          reviews: 145,
-          price: 13799,
-          features: ['2450万像素', '4K视频', '双EXPEED 6', 'Wi-Fi']
-        },
-        {
-          id: 4,
-          brand: '富士',
-          name: 'X-T4 无反相机',
-          image: 'https://picsum.photos/id/1019/500/300',
-          rating: 4.6,
-          reviews: 203,
-          price: 8799,
-          features: ['2610万像素', '4K 60p', '五轴防抖', '复古设计']
-        }
-      ]
+      // 初始化时为空数组，等待后端数据
+      featuredCameras: [],
     };
   },
   methods: {
     viewDetails(camera) {
-      // 跳转到相机详情页
-      this.$router.push(`/camera-details/${camera.id}`);
+      // 这里可以添加查看详情的逻辑，比如跳转到详情页
+      console.log('查看相机详情:', camera);
+
+    },
+    toggleLike(camera) {
+      camera.liked = !camera.liked;
+    },
+    // 获取热门相机数据
+    async fetchPopularCameras() {
+      try {
+        const response = await request.get('/camera/popular')
+        console.log('后端返回完整数据:', response);
+
+        // 正确的层级解析：response.data 是接口返回的外层对象，包含 code、message、data
+        const apiData = response.data;
+
+        // 验证数据格式
+        if (apiData.code === 200 && Array.isArray(apiData.data)) {
+          // 先对原始数据进行切片，只取前6条
+          const limitedData = apiData.data.slice(0, 6);
+
+          this.featuredCameras = limitedData.map(camera => {
+            // 收集特性（过滤 null 值）
+            const features = [];
+            if (camera.design_style) features.push(camera.design_style);
+            if (camera.pixel) features.push(camera.pixel);
+            if (camera.stabilization) features.push(camera.stabilization);
+            if (camera.videoRes) features.push(camera.videoRes);
+
+            // 处理默认图片
+            const defaultImg = `https://picsum.photos/seed/${camera.cameraId}/300/200`;
+
+            return {
+              cameraId: camera.cameraId,
+              brand: camera.brand,
+              model: camera.model,
+              price: camera.price,
+              imgUrl: camera.imgUrl || defaultImg,
+              // 生成模拟评分和评论数
+              rating: Math.floor(Math.random() * 2) + 4, // 4-5星
+              reviews: Math.floor(Math.random() * 200) + 50, // 50-250条评论
+              features: features,
+              liked: false
+            };
+          });
+        } else {
+          console.error('后端返回数据格式不正确');
+        }
+      } catch (error) {
+        console.error('获取热门相机数据失败:', error);
+      }
     }
+  },
+  mounted() {
+    this.fetchPopularCameras();
   }
 };
 
