@@ -47,7 +47,9 @@
 <script>
 import request from "../utils/request.js";
 import CameraCard from "../components/CameraCard.vue";
+import {addCameraLike, removeCameraLike} from "../utils/likeUtil.js";
 
+const token = localStorage.getItem('token');
 export default {
   name: 'IndexPage',
   components: {CameraCard},
@@ -58,6 +60,17 @@ export default {
     };
   },
   methods: {
+
+    async toggleLike(camera) {
+      if(token!=null){
+        if(camera.liked === false) {
+          await addCameraLike(camera);
+        }else{
+          await removeCameraLike(camera);
+        }
+        camera.liked = !camera.liked;
+      }
+    },
     async fetchSearchCameras() {
       try {
         // 获取URL中的搜索参数

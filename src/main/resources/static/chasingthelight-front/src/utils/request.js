@@ -16,6 +16,11 @@ request.interceptors.request.use(
             const token = localStorage.getItem('token');
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
+                // 添加调试日志
+                console.log('请求URL:', config.url);
+                console.log('添加的Authorization:', config.headers.Authorization);
+            } else {
+                console.log('未获取到token');
             }
         }
         return config;

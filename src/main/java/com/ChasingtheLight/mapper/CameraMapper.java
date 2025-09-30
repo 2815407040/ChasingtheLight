@@ -5,6 +5,7 @@ import com.ChasingtheLight.entity.Camera;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -19,4 +20,10 @@ public interface CameraMapper {
             "WHERE LOWER(brand) LIKE CONCAT('%', LOWER(#{searchTerm}), '%') " +
             "OR LOWER(model) LIKE CONCAT('%', LOWER(#{searchTerm}), '%')")
     List<CameraVO> selectCameraBySearch(@Param("searchTerm") String searchTerm);
+
+    @Update("update camera set love = love + 1 where camera_id = #{cameraId}")
+    void addCameraLove(int cameraId);
+
+    @Update("update camera set love = love - 1 where camera_id = #{cameraId}")
+    void reduceCameraLove(int cameraId);
 }

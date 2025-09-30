@@ -23,4 +23,12 @@ public class CameraService {
     }
 
     public List<CameraVO> selectCameraBySearch(String searchTerm){return cameraMapper.selectCameraBySearch(searchTerm);}
+
+    public void addCameraLove(int cameraId){
+        cameraMapper.addCameraLove(cameraId);
+    }
+
+    public void reduceCameraLove(int cameraId){
+        cameraMapper.reduceCameraLove(cameraId);
+    }
 }

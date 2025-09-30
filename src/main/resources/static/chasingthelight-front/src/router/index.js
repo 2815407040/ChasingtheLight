@@ -1,4 +1,4 @@
-// src/router/index.js
+
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/login.vue'
 import Layout from "../views/index.vue";

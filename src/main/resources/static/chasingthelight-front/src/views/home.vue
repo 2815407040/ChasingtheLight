@@ -36,7 +36,8 @@
 <script>
 import CameraCard from "../components/CameraCard.vue";
 import request from "../utils/request.js";
-
+import {addCameraLike, removeCameraLike} from "../utils/likeUtil.js";
+const token = localStorage.getItem('token');
 export default {
   name: 'HomePage',
   components: {
@@ -54,8 +55,15 @@ export default {
       console.log('查看相机详情:', camera);
 
     },
-    toggleLike(camera) {
-      camera.liked = !camera.liked;
+    async toggleLike(camera) {
+      if(token!=null){
+        if(camera.liked === false) {
+          await addCameraLike(camera);
+        }else{
+          await removeCameraLike(camera);
+        }
+        camera.liked = !camera.liked;
+      }
     },
     // 获取热门相机数据
     async fetchPopularCameras() {

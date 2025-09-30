@@ -11,7 +11,9 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 1. 获取请求头中的token
         String token = request.getHeader("Authorization");
-
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7); // 截取"Bearer "之后的部分
+        }
         // 2. 验证token（排除登录/注册接口）
         String path = request.getRequestURI();
         if ("/user/login".equals(path) || "/user/register".equals(path)|| "/camera/popular".equals(path)) {
