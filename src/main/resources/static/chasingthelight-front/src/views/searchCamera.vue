@@ -9,24 +9,14 @@
         </div>
 
         <div class="cameras-grid">
-          <div class="camera-card" v-for="camera in featuredCameras" :key="camera.cameraId">
-            <div class="camera-img">
-              <img :src="camera.imgUrl" :alt="camera.model">
-            </div>
-            <div class="camera-info">
-              <div class="camera-brand">{{ camera.brand }}</div>
-              <div class="camera-name">{{ camera.model }}</div>
-              <div class="camera-rating">
-                <i class="fa fa-star" v-for="n in 5" :key="n" :class="{ 'fa-star-o': n > camera.rating }"></i>
-                <span>({{ camera.reviews }})</span>
-              </div>
-              <div class="camera-price">¥{{ camera.price }}</div>
-              <div class="camera-features">
-                <span class="feature-tag" v-for="feature in camera.features" :key="feature">{{ feature }}</span>
-              </div>
-              <button class="view-details" @click="viewDetails(camera)">查看详情</button>
-            </div>
-          </div>
+          <camera-card
+              v-for="camera in featuredCameras"
+              :key="camera.cameraId"
+              :camera="camera"
+              :show-like-icon="true"
+              @view-details="viewDetails"
+              @toggle-like="toggleLike"
+          ></camera-card>
         </div>
       </div>
     </section>
@@ -56,9 +46,11 @@
 
 <script>
 import request from "../utils/request.js";
+import CameraCard from "../components/CameraCard.vue";
 
 export default {
   name: 'IndexPage',
+  components: {CameraCard},
   data() {
     return {
       // 初始化时为空数组，等待后端数据
