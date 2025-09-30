@@ -14,13 +14,12 @@
             <div class="camera-img">
               <img :src="camera.imgUrl" :alt="camera.model">
             </div>
+            <i class="fa-regular fa-heart heart-icon" :class="{ 'active': camera.liked }" @click="toggleLike(camera)"></i>
             <div class="camera-info">
               <div class="camera-brand">{{ camera.brand }}</div>
               <div class="camera-name">{{ camera.model }}</div>
-              <div class="camera-rating">
-                <i class="fa fa-star" v-for="n in 5" :key="n" :class="{ 'fa-star-o': n > camera.rating }"></i>
-                <span>({{ camera.reviews }})</span>
-              </div>
+
+
               <div class="camera-price">¥{{ camera.price }}</div>
               <div class="camera-features">
                 <span class="feature-tag" v-for="feature in camera.features" :key="feature">{{ feature }}</span>
@@ -75,22 +74,11 @@ export default {
     };
   },
   methods: {
-    viewDetails(camera) {
-      // 跳转到相机详情页，可以根据实际路由进行修改
-      this.$router.push(`/camera-details/${camera.id}`);
-      // 如果暂时没有详情页，可以使用弹窗显示信息
-      // alert(`查看 ${camera.brand} ${camera.name} 的详情`);
-    },
-    handleLogout() {
-      // 清除本地存储的token
-      localStorage.removeItem('token');
-      // 跳转到登录页
-      this.$router.push('/login');
-      // 显示退出登录提示
-      alert('已成功退出登录');
+
+    toggleLike(camera) {
+      camera.liked = !camera.liked;
     },
     // 获取热门相机数据
-    // 修改 fetchPopularCameras 方法
     async fetchPopularCameras() {
       try {
         const response = await request.get('/camera/popular')
@@ -121,7 +109,8 @@ export default {
               // 生成模拟评分和评论数
               rating: Math.floor(Math.random() * 2) + 4, // 4-5星
               reviews: Math.floor(Math.random() * 200) + 50, // 50-250条评论
-              features: features
+              features: features,
+              liked: false
             };
           });
         } else {

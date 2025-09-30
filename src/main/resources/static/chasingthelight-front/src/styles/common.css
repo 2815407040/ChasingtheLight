@@ -640,3 +640,55 @@ footer {
         display: none; /* 移动端仍只显示图标 */
     }
 }
+
+/* 为分类卡片添加相对定位，使爱心图标可以绝对定位 */
+.category-card {
+    position: relative;
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+/* 相机卡片爱心图标样式 */
+.camera-img {
+    position: relative; /* 确保爱心图标可以绝对定位 */
+    height: 200px;
+    overflow: hidden;
+}
+
+/* 爱心图标样式修改 */
+.heart-icon {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    color: white; /* 初始白色空心爱心 */
+    text-shadow: 0 0 2px rgba(0,0,0,0.3); /* 增加文字阴影提高可见度 */
+    z-index: 2; /* 确保在图片上方显示 */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 400;
+}
+
+.heart-icon::before {
+    content: '\f08a'; /* 空心爱心图标 */
+}
+
+.heart-icon:hover {
+    transform: scale(1.1); /* hover时稍微放大 */
+}
+
+/* 激活状态 - 红色内部对角线相连的空心矩形 */
+/* 修改激活状态的爱心图标 */
+.heart-icon.active {
+    color: #e74c3c; /* 红色 */
+    font-weight: 400; /* 保持常规字重 */
+}
+
+/* 将正方形图标改为空心爱心图标 */
+.heart-icon.active::before {
+    content: '\f08a'; /* 空心爱心图标（与未激活状态相同但颜色变为红色） */
+}
