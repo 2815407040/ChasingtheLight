@@ -28,11 +28,11 @@ public class JwtUtils {
         // 构建JWT
         return Jwts.builder()
                 .setHeader(headers)
-                .setSubject(userName) // 主题（用户名）
-                .claim("userId", userId) // 自定义载荷（用户ID）
-                .setIssuedAt(new Date()) // 签发时间
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // 过期时间
-                .signWith(key, SignatureAlgorithm.HS256) // 签名
+                .setSubject(userName)
+                .claim("userId", userId) // 确保此处正确传入userId
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 

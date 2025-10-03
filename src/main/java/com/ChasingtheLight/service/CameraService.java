@@ -3,9 +3,11 @@ package com.ChasingtheLight.service;
 import com.ChasingtheLight.VO.CameraVO;
 import com.ChasingtheLight.entity.Camera;
 import com.ChasingtheLight.mapper.CameraMapper;
+import com.ChasingtheLight.mapper.UserCameraLikeMapper;
 import com.ChasingtheLight.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +19,8 @@ public class CameraService {
         this.cameraMapper = cameraMapper;
     }
 
+    @Autowired
+    private UserCameraLikeMapper likeMapper;
 
     public List<CameraVO> selectCameraByLove(){
         return cameraMapper.selectCameraByLove();
@@ -24,11 +28,14 @@ public class CameraService {
 
     public List<CameraVO> selectCameraBySearch(String searchTerm){return cameraMapper.selectCameraBySearch(searchTerm);}
 
-    public void addCameraLove(int cameraId){
+    @Transactional
+    public void addCameraLove(int userId,int cameraId){
         cameraMapper.addCameraLove(cameraId);
+        likeMapper.insertByUserAndCamera(userId, cameraId);
     }
-
-    public void reduceCameraLove(int cameraId){
+    @Transactional
+    public void reduceCameraLove(int userId,int cameraId){
+        likeMapper.deleteByUserAndCamera(userId, cameraId);
         cameraMapper.reduceCameraLove(cameraId);
-    }
+        }
 }

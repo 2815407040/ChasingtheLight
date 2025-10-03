@@ -34,17 +34,43 @@ public class CameraController {
 
     @PostMapping("/addCameralike")
     public Result addCameraLike(@RequestBody Map<String, Integer> params, HttpServletRequest request) {
-        int cameraId = params.get("cameraId");
+        // 检查用户是否已登录
         Integer userId = (Integer) request.getAttribute("userId");
-        cameraService.addCameraLove(cameraId);
-        return Result.success(); // 添加返回值
+        if (userId == null) {
+            return Result.error("请先登录"); // 返回未登录错误
+        }
+
+        Integer cameraId = params.get("cameraId");
+        if (cameraId == null) {
+            return Result.error("相机ID不能为空");
+        }
+
+        try {
+            cameraService.addCameraLove(userId, cameraId);
+            return Result.success("点赞成功");
+        } catch (Exception e) {
+            return Result.error("点赞失败：" + e.getMessage());
+        }
     }
 
     @PostMapping("/reduceCameralike")
-    public Result redeceCameraLike(@RequestBody Map<String, Integer> params, HttpServletRequest request) {
-        int cameraId = params.get("cameraId");
+    public Result reduceCameraLike(@RequestBody Map<String, Integer> params, HttpServletRequest request) {
+        // 同样添加用户验证
         Integer userId = (Integer) request.getAttribute("userId");
-        cameraService.reduceCameraLove(cameraId);
-        return Result.success(); // 添加返回值
+        if (userId == null) {
+            return Result.error("请先登录");
+        }
+
+        Integer cameraId = params.get("cameraId");
+        if (cameraId == null) {
+            return Result.error("相机ID不能为空");
+        }
+
+        try {
+            cameraService.reduceCameraLove(userId, cameraId);
+            return Result.success("取消点赞成功");
+        } catch (Exception e) {
+            return Result.error("取消点赞失败：" + e.getMessage());
+        }
     }
 }

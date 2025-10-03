@@ -12,6 +12,10 @@ export const addCameraLike = async (camera) => {
         // 发送请求到后端
         const response = await request.post('/camera/addCameralike', {
             cameraId: Number(camera.cameraId)
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         });
 
         console.log( response.data.message);
@@ -29,7 +33,11 @@ export const removeCameraLike = async (camera) => {
         // 发送请求到后端
         const response = await request.post('/camera/reduceCameralike', {
             cameraId: Number(camera.cameraId)
-        });
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });;
 
         console.log( response.data.message);
         return false;

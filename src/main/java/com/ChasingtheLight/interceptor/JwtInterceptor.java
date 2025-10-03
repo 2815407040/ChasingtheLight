@@ -11,6 +11,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 1. 获取请求头中的token
         String token = request.getHeader("Authorization");
+
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7); // 截取"Bearer "之后的部分
         }
@@ -29,7 +30,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         try {
             Claims claims = JwtUtils.verifyToken(token);
             // 将用户信息存入请求域，方便后续接口使用
-            request.setAttribute("userId", claims.get("userId"));
+            Long userIdLong = claims.get("userId", Long.class);
+            request.setAttribute("userId", userIdLong.intValue()); // 先转Long再转Integer
             request.setAttribute("userName", claims.getSubject());
             return true; // 验证通过，放行
         } catch (Exception e) {
